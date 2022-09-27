@@ -29,7 +29,7 @@ namespace GestionDeStock.Server.Controllers
             var producto = await Context.Productos.Where(e => e.CodigoProducto == codigo).FirstOrDefaultAsync();
             if (producto == null)
             {
-                return NotFound($"No existe la especialidad de codigo={codigo}");
+                return NotFound($"No existe el producto={codigo}");
             }
             return producto;
         }
@@ -89,18 +89,18 @@ namespace GestionDeStock.Server.Controllers
 
             if (Delete == null)
             {
-                return NotFound($"El registro {codigo} no fue encontrado");
+                return NotFound($"El producto {codigo} no fue encontrado");
             }
 
             try
             {
                 Context.Productos.Remove(Delete);
                 Context.SaveChanges();
-                return Ok($"El registro de {Delete.NombreProducto} ha sido borrado.");
+                return Ok($"El producto {Delete.NombreProducto} ha sido borrado.");
             }
             catch (Exception e)
             {
-                return BadRequest($"Los datos no pudieron eliminarse por: {e.Message}");
+                return BadRequest($"El producto no pudo eliminarse por: {e.Message}");
             }
         }
     }
