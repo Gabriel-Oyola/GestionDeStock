@@ -13,7 +13,7 @@ namespace BDGestionDeStock.Data.Entidades
     {
         [Required]
         [MaxLength(8, ErrorMessage = "El codigo no debe superar los {1} caracteres")]
-        public int CodigoProducto { get; set; }
+        public string CodigoProducto { get; set; }
 
         [Required]
         [MaxLength(150, ErrorMessage = "El Nombre no debe superar los {1} caracteres")]

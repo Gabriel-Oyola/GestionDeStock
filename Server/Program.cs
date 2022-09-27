@@ -1,6 +1,7 @@
 using BDGestionDeStock.Data;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +12,14 @@ builder.Services.AddRazorPages();
 var conn = builder.Configuration.GetConnectionString("conn");
 builder.Services.AddDbContext<BDContext1>(opciones => opciones.UseSqlServer(conn));
 
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Gestion de stock", Version = "v1" });
+});
 var app = builder.Build();
 
-
+app.UseSwagger();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Locacion v1"));
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
