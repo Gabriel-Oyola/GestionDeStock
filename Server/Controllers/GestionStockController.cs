@@ -20,7 +20,8 @@ namespace GestionDeStock.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Producto>>> Get()
         {
-            return await Context.Productos.ToListAsync();
+            var resp = await Context.Productos.ToListAsync();
+            return resp; 
         }
 
         [HttpGet("BuscarPorCodigo/{codigo}")]
