@@ -1,5 +1,5 @@
 ﻿@page "/Productos"
-@using GestionDeStock.Client.Servicios
+
 @inject IHttpService http
 
 
@@ -51,7 +51,8 @@
 
     private async Task Leer()
     {
-        var respuesta = await http.Get<List<Producto>>("api/[controller]");
+
+        var respuesta = await http.Get<List<Producto>>("api/GestionStock");
         if (!respuesta.Error)
         {
             productos = respuesta.Respuesta;
