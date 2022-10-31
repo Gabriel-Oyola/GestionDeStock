@@ -1,0 +1,27 @@
+﻿@page "/Productos/Crear"
+@inject IHttpService http
+@inject NavigationManager NavigatorManager
+
+<h3>Nuevo producto</h3> 
+
+<FormProducto producto="producto" onCancel="Cancelar" onValidSubmit="Grabar" > 
+
+</FormProducto>
+
+
+@code {
+    private Producto producto = new Producto();
+    private async void Grabar()
+    {
+        var httpRespuesta = await http.Post<Producto>("api/GestionStock", producto);
+        if (httpRespuesta.Error)
+        {
+            var body = httpRespuesta.HtttpResponse;
+            NavigatorManager.NavigateTo("/Productos");
+        }
+    }
+     private void Cancelar()
+    {
+        
+    }
+}

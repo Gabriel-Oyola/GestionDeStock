@@ -1,0 +1,48 @@
+﻿@page "/Productos/Editar/{productoCod}"
+@inject IHttpService http
+@inject NavigationManager NavigatorManager
+
+
+<h3>Editar Producto</h3>
+<FormProducto producto="producto" onCancel="Cancelar" onValidSubmit="Grabar" > 
+
+</FormProducto>
+
+
+@code {
+    private Producto producto = new Producto();
+    [Parameter] public string productoCod{ get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await Mostrar();
+    }
+
+    private async Task Mostrar()
+    {
+        var respuesta = await http.Get<Producto>($"api/GestionStock/{productoCod}");
+        if (respuesta.Error)
+        {
+            var body = respuesta.HtttpResponse;
+
+        }
+        else
+        {
+            producto = respuesta.Respuesta; 
+        }
+    }
+    private async void Grabar()
+    {
+        var respuesta = await http.Put<Producto>($"api/GestionStock/{productoCod}", producto);
+         if (respuesta.Error)
+        {
+            var body = respuesta.HtttpResponse;
+           
+        }
+         NavigatorManager.NavigateTo("/Productos");
+    }
+    private void Cancelar()
+    {
+        NavigatorManager.NavigateTo("/Productos");
+    }
+}

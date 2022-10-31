@@ -2,7 +2,7 @@
 
 @inject IHttpService http
 
-
+<a class="btn btn-primary" href="/Productos/Crear"> Nuevo Producto</a>
 
 <h3>ListaProductos</h3> 
 
@@ -11,9 +11,9 @@
 <table>
     <tr>
         <th>Codigo</th>
-        <th>Nombre        </th> 
-        <th>Descripcion   </th> 
-        <th>Stock         </th>
+        <th>Nombre</th> 
+        <th>Descripcion</th> 
+        <th>Stock</th>
     </tr>
 @if (productos == null)
     {
@@ -32,6 +32,9 @@
               <td>@item.NombreProducto</td>
               <td>@item.DescripcionProducto</td>
               <td>@item.Stock</td>
+              <td>
+                  <a class="btn btn-primary" href="/Productos/Editar/@item.CodigoProducto"> Editar</a>
+              </td>
           </tr> 
         }
     }

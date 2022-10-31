@@ -21,7 +21,7 @@ namespace BDGestionDeStock.Data.Entidades
 
         public string DescripcionProducto { get; set; } 
 
-        public int Stock { get; set; } 
+        public string Stock { get; set; } 
         //
 
     }
