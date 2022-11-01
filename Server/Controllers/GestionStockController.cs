@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GestionDeStock.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/GestionStock")]
     [ApiController]
     public class GestionStockController : ControllerBase
     {
@@ -22,6 +22,19 @@ namespace GestionDeStock.Server.Controllers
         {
             var resp = await Context.Productos.ToListAsync();
             return resp; 
+        }
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Producto>> Get(int id)
+        {
+            var Producto = await Context.Productos
+                                         .Where(e => e.Id == id)
+                                         //.Include(m => m.Matriculas)
+                                         .FirstOrDefaultAsync();
+            if (Producto == null)
+            {
+                return NotFound($"No existe el producto de Id={id}");
+            }
+            return Producto;
         }
 
         [HttpGet("BuscarPorCodigo/{codigo}")]
@@ -52,28 +65,30 @@ namespace GestionDeStock.Server.Controllers
             }
         }
 
-        [HttpPut]
-        public ActionResult Put(string codigo, [FromBody] Producto producto)
+        [HttpPut("{id:int}")]
+        public ActionResult Put(int id, [FromBody] Producto producto)
         {
-            if (codigo != producto.CodigoProducto)
+            if (id != producto.Id)
             {
                 return BadRequest("Datos incorrectos");
             }
 
-            var updateP = Context.Productos.Where(e => e.CodigoProducto == codigo).FirstOrDefault();
+            var updatep = Context.Productos.Where(e => e.Id == id).FirstOrDefault();
 
-            if (updateP == null)
+            if (updatep == null)
             {
-                return NotFound("No existe el producto");
+                return NotFound("No existe el producto a modificar");
             }
 
-            updateP.CodigoProducto = producto.CodigoProducto;
-            updateP.NombreProducto = producto.NombreProducto;
+            updatep.CodigoProducto = producto.CodigoProducto;
+            updatep.NombreProducto = producto.NombreProducto;
+            updatep.DescripcionProducto = producto.DescripcionProducto;
+            updatep.Stock = producto.Stock;
 
             try
             {
                 //throw(new Exception("Cualquier Verdura"));
-                Context.Productos.Update(updateP);
+                Context.Productos.Update(updatep);
                 Context.SaveChanges();
                 return Ok();
             }
@@ -83,25 +98,25 @@ namespace GestionDeStock.Server.Controllers
             }
         }
 
-        [HttpDelete]
-        public ActionResult Delete(string codigo)
+        [HttpDelete("{id:int}")]
+        public ActionResult Delete(int id)
         {
-            var Delete = Context.Productos.Where(x => x.CodigoProducto == codigo).FirstOrDefault();
+            var Borrar = Context.Productos.Where(x => x.Id == id).FirstOrDefault();
 
-            if (Delete == null)
+            if (Borrar == null)
             {
-                return NotFound($"El producto {codigo} no fue encontrado");
+                return NotFound($"El registro {id} no fue encontrado");
             }
 
             try
             {
-                Context.Productos.Remove(Delete);
+                Context.Productos.Remove(Borrar);
                 Context.SaveChanges();
-                return Ok($"El producto {Delete.NombreProducto} ha sido borrado.");
+                return Ok($"El registro de {Borrar.NombreProducto} ha sido borrado.");
             }
             catch (Exception e)
             {
-                return BadRequest($"El producto no pudo eliminarse por: {e.Message}");
+                return BadRequest($"Los datos no pudieron eliminarse por: {e.Message}");
             }
         }
     }

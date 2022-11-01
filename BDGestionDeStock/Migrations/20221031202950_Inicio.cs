@@ -14,10 +14,10 @@ namespace BDGestionDeStock.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CodigoProducto = table.Column<int>(type: "int", maxLength: 8, nullable: false),
+                    CodigoProducto = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
                     NombreProducto = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     DescripcionProducto = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Stock = table.Column<int>(type: "int", nullable: false)
+                    Stock = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

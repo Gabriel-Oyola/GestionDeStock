@@ -33,7 +33,14 @@
               <td>@item.DescripcionProducto</td>
               <td>@item.Stock</td>
               <td>
-                  <a class="btn btn-primary" href="/Productos/Editar/@item.CodigoProducto"> Editar</a>
+                  <a class="btn btn-primary" href="/Productos/Editar/@item.Id"> Editar</a>
+              </td>
+
+              <td>
+                  <button class="btn btn-warning" @onclick="()=>Eliminar(item)">
+                      Eliminar
+
+                  </button>
               </td>
           </tr> 
         }
@@ -43,8 +50,20 @@
 
 </table>
 
+<Confirmacion @ref="confirmacion"
+verCancelar="true" 
+verOk="true" textCancelar="Cancelar" onCancel="cancelar" onConfirm="Borrar">
+<div>
+    El producto @ProductoBorrar.NombreProducto sera eliminado. 
+    <br/> 
+    ¿Esta seguro que desea continuar?
+</div> 
+
+</Confirmacion>
 @code {
     List<Producto> productos;
+    Producto ProductoBorrar;
+    Confirmacion confirmacion; 
 
     protected override async Task OnInitializedAsync()
     {
@@ -62,4 +81,25 @@
         }
     }
 
+    private void Eliminar(Producto productoBorrar)
+    {
+        ProductoBorrar = productoBorrar; 
+        confirmacion.Ver(); 
+    }
+    private void cancelar()
+    {
+        confirmacion.Ocultar();
+        ProductoBorrar = null; 
+    }
+    private async Task Borrar()
+    {
+        var respuesta = await http.Delete($"api/GestionStock/{ProductoBorrar.Id}");
+        if (respuesta.Error)
+        {
+            var body = "Error"; 
+
+        }
+        cancelar(); 
+        await Leer(); 
+    }
 }

@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BDGestionDeStock.Migrations
 {
     [DbContext(typeof(BDContext1))]
-    [Migration("20220808132422_Inicio")]
+    [Migration("20221031202950_Inicio")]
     partial class Inicio
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -31,9 +31,10 @@ namespace BDGestionDeStock.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CodigoProducto")
+                    b.Property<string>("CodigoProducto")
+                        .IsRequired()
                         .HasMaxLength(8)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("DescripcionProducto")
                         .IsRequired()
@@ -44,8 +45,9 @@ namespace BDGestionDeStock.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int>("Stock")
-                        .HasColumnType("int");
+                    b.Property<string>("Stock")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
